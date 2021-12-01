@@ -1,0 +1,40 @@
+<html>
+<head></head>
+<body>
+    <script>
+        var notaTrabajo1 = Number(prompt("Introduce la nota de la primera practica"));
+        var notaTrabajo2 = Number(prompt("Introduce la nota de la segunda practica"));
+        var notaExamen = Number(prompt("Introduce la nota obtenida en el examen"));
+        var notaComportamiento = Number(prompt("Introduce la nota del comportamiento"));
+        //Gestiono que todas las notas esten entre 0 y 10
+        if ((notaTrabajo1 <= 10 && notaTrabajo1 >= 0) && (notaTrabajo2 <= 10 && notaTrabajo2 >= 0) && (notaExamen <= 10 && notaExamen >= 0) && (notaComportamiento <= 10 && notaComportamiento >= 0)) {
+            var mediaTrabajos = (notaTrabajo1 + notaTrabajo2) / 2;
+            var notaFinal = 0;
+            //Gestiono que la nota minima sea de un 4
+            if (notaTrabajo1 >= 4 && notaTrabajo2 >= 4 && notaExamen >= 4) {
+                notaFinal = (mediaTrabajos * 0.45) + (notaExamen * 0.45);
+                if (notaFinal >= 4.5) {
+                    notaFinal += notaComportamiento * 0.1;
+                }
+            } else {
+                notaFinal = (mediaTrabajos * 0.45) + (notaExamen * 0.45);
+                if (notaFinal >= 4.5) {
+                    notaFinal = 4;
+                }
+                if (notaTrabajo1 < 4) {
+                    alert("La nota de la practica 1 no cumple los requisitos ya que la nota es de " + notaTrabajo1);
+                }
+                if (notaTrabajo2 < 4) {
+                    alert("La nota de la practica 2 no cumple los requisitos ya que la nota es de " + notaTrabajo2);
+                }
+                if (notaExamen < 4) {
+                    alert("La nota del examen no cumple los requisitos ya que la nota es de " + notaExamen);
+                }
+            }
+            alert("La nota final es " + notaFinal);
+        } else {
+            alert("Error: las notas deben de estar comprendidas entre 0 y 10");
+        }
+    </script>
+</body>
+</html>

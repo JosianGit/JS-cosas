@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        class Vocales {
+            constructor(a = 0, e = 0, i = 0, o = 0, u = 0) {
+                this.a = a;
+                this.e = e;
+                this.i = i;
+                this.o = o;
+                this.u = u;
+            }
+        }
+
+
+        function contabilizarVocales() {
+            //reseteo el valor de las vocales del objeto "vocalesTexto"
+            var vocalesTexto = new Vocales();
+            //Obtengo el texto que haya introducido el usuario en el TextArea
+            var texto = document.getElementById("areaTexto").value;
+            console.log("Texto del textArea: " + texto);
+            //recorro cada caracter del texto en busca de vocales
+            texto.split("").forEach(caracterActual => {
+                switch (caracterActual) {
+                    case 'a':
+                        vocalesTexto.a += 1;
+                        break;
+                    case 'e':
+                        vocalesTexto.e += 1;
+                        break;
+                    case 'i':
+                        vocalesTexto.i += 1;
+                        break;
+                    case 'o':
+                        vocalesTexto.o += 1;
+                        break;
+                    case 'u':
+                        vocalesTexto.u += 1;
+                        break;
+                    default:
+                        break;
+                }
+            });
+            console.log(vocalesTexto);
+            document.getElementById("resultadoTexto").textContent = "a: " + vocalesTexto.a + "; " + "e: " + vocalesTexto.e + "; " + "i: " + vocalesTexto.i + "; " + "o: " + vocalesTexto.o + "; " + "u: " + vocalesTexto.u;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Escribe en el area de texto y verás cuantas vocales has puesto</h1>
+    <br>
+    <textarea id="areaTexto" placeholder="Escribe lo que quieras" style="width: 250px; height: 150px;"></textarea>
+    <br>
+    <button onclick="contabilizarVocales()">Ver vocales</button>
+    <br>
+    <h3>Vocales totales</h3>
+    <h4 id="resultadoTexto"></h4>
+</body>
+
+</html>

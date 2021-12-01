@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <script>
+        //--------------GENERO UN OBJETO CON ATRIBUTOS Y METODOS ------------------
+        //Una clase con atributos y dos metodos a los que posteriormente llamo
+        class Coche {
+            constructor(modelo, marca, annoFabricacion) {
+                this.modelo = modelo;
+                this.marca = marca;
+                this.annoFabricacion = annoFabricacion;
+                this.info = function () {
+                    alert("Hola soy " + modelo + " de la marca " + marca);
+                };
+                this.velocidad = function (velocidad) {
+                    alert("Alcanzo velocidades de hasta " + velocidad + " km/h");
+                }
+            }
+
+        }
+        //Añado al objeto Coche una nueva funcion que estara presentes en todas las instancias de dicho objeto
+        Coche.prototype.garantia = function (annos) {
+            alert("Tengo una garantia de " + annos + " años");
+        }
+
+        function inicio() {
+            var coche = new Coche("407", "Peugeot", 2011);
+            coche.info();
+            coche.velocidad(180);
+            coche.garantia(5);
+        }
+        //--------------------------------------------------------------
+        //---------------------JUEGO CON FUNCIONES ----------------------
+        //Dos ejemplos de funciones creadas de formas distintas: creando una funcion como tal
+        //como se ha hecho de toda la vida y creando una variable cuyo valor sea una funcion
+        function funcionFormato01(texto) {
+            console.log("Soy la funcionFormato01 y este es mi texto: " + texto);
+        }
+        var funcionFormato02 = function (texto) {
+            console.log("Soy la funcionFormato02 y este es mi texto: " + texto);
+        }
+        //----------------------------------------------------------------------------
+        //--------------------------JUEGO CON ARRAYS---------------------------------
+        var marcas = new Array("Citroen", "Mazda", "BMW", "Mercedes Benz", "Renault", "Peugeot", "Honda", "Seat", "Ferrari", "Fiat", "Ford", "Skoda");
+        console.log(marcas);
+        //con map opero sobre cada elemento del array y genero otro con los cambios
+        var marcasMayus = marcas.map(function (marcaActual) {
+            return marcaActual.toUpperCase();
+        });
+        console.log("marcasMayus con map");
+        console.log(marcasMayus);
+        //con slice creo un nuevo array con los elementos de las posiciones que vea del original (posicionInicial-incluido, posicionFinal-excluida)
+        var algunasMarcas = marcas.slice(3, 6);
+        console.log("marcas con slice(3,6)");
+        console.log(algunasMarcas);
+        //con filter realizo una busqueda dentro del array y genero un nuevo array con los elementos del array original que cumplan el filtro de la busqueda
+        var marcasConT = marcas.filter(function (marcaActual) {
+            if (marcaActual.includes('t')) {
+                return marcaActual;
+            }
+        });
+        //-------------------------------------------------------------------------------------
+        console.log("marcas que contengan la t con filter");
+        console.log(marcasConT);
+    </script>
+</head>
+
+<body onload="inicio()">
+    <h1>Prueba de metodos en objetos y metodos de Array</h1>
+    <br>
+    <button onclick="funcionFormato01('que pasa chavales...')">Pulsame funcion Formato 01</button>
+    <br>
+    <button onclick="funcionFormato02('Hola que pasa')">Pulsame funcion Formato 02</button>
+</body>
+
+</html>

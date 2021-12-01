@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Apertura y cierre de Ventanas</title>
+<script type="text/javascript">
+var anchoIdeal = screen.width / 2;
+var altoIdeal = screen.height / 2;
+var x = 400;
+var y = 400;
+var nuevaVentana;
+function crearNueva() {
+ nuevaVentana = window.open("https://aulavirtual3.educa.madrid.org/ies.lagunadejoatzel.getafe/course/view.php?id=616", "", "height="+y+", width="+x+", top="+altoIdeal+", left="+anchoIdeal);
+}
+
+function inicializar() {
+    document.getElementById("crear-ventana").onclick = crearNueva;
+}
+</script>
+
+<head>
+
+</head>
+
+<body onload="inicializar()">
+    <h3>Ejercicio 1: Crea una ventana que se abra con el aula virtual del curso DWEC en Educamadrid y posicionala con su esquina superior-izq en el centro exacto de tu pantalla.</h3>
+    <form>
+        <p> 
+            <input type="button" id="crear-ventana" value="Crear ventana de Aula Virtual">
+        </p>
+    </form>
+</body>
+<html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Docuement</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <script>
+        class Candidato {
+            constructor(nombre, votos = 0) {
+                this.nombre = nombre;
+                this.votos = votos;
+            }
+        }
+        let alumnos = [];
+        let candidatos = [];
+        let contador = 0;
+        let indiceCandidato = 0;
+        addEventListener("load", leerYcargarArchivo, false);
+        function leerYcargarArchivo() {
+            console.log("hola que pasa");
+            document.getElementById("enviarVoto").style.visibility = "hidden";
+            document.getElementById("selectVotos").style.visibility = "hidden";
+            document.getElementById("enviarCandidatos").style.visibility = "hidden";
+            document.getElementById("selector").style.visibility = "hidden";
+            document.getElementById("archivoTexto").addEventListener("change", cargarContenido, false);
+        }
+        function cargarContenido(evento) {//en este caso "evento" es el elemento input type="file"
+            console.log("ejecuto cargarContenido(evento)");
+            let archivo = evento.target.files[0] //obtengo el primer archivo del array de archivos
+            if (archivo) {//si existe un archivo. SI EL USUARIO HA SELECCIONADO ALGO
+                let lector = new FileReader();
+                lector.readAsText(archivo); //Leemos el contenido del archivo
+                //IMPORTANTE: lector.onload NO SE EJECUTARÁ HASTA QUE NO SE INVOQUE .ReadAs... en el FileReader
+                lector.onload = function (e) {
+                    //en esta funcion anonima decimos que cuando se use el lector (el elemento FileReader)
+                    //se cargue el contenido en la variable "contenido" para cargarlo posteriormente
+                    //en un <SELECT> con <OPTION> que creare en tiempo de ejecucion
+                    let contenido = e.target.result;
+                    alumnos = contenido.split("\n");//guardamos el contenido del archivo en el array alumnos
+                    console.log("vamos a ver que tiene el array");
+                    for (let index = 0; index < alumnos.length; index++) {
+                        const element = alumnos[index];
+                        console.log("Alumno en pos " + index + " es " + element);
+                    }
+                    document.getElementById("parrafoTexto").textContent = "Selecciona a los candidatos";
+                    document.getElementById("selector").style.visibility = "visible";
+                    document.getElementById("enviarCandidatos").style.visibility = "visible";
+                    //Creo el selector de los SELECT
+                    for (let i = 0; i < alumnos.length; i++) {
+                        //Indico al array de options del select que en cada 
+                        //posicion del for (i) añada una option nueva con el valor del alumno
+                        //de dicha posicion
+                        document.getElementById("selector").options[i] = new Option(alumnos[i]);
+                    }
+                }
+                document.getElementById("enviarCandidatos").addEventListener("click", almacenarCandidatos, false);
+            };
+
+        }
+        function almacenarCandidatos() {
+            //Almacenamos en el array candidatos los values seleccionados del select
+            console.log("Entramos en almacenarCandidatos");
+            var select = document.getElementById("selector");
+            var totalt;
+            var total = 0;
+            console.log("num elementos SELECT: " + select.length);
+            for (var i = 0; i < select.length; i++) {
+                if (select[i].selected) {
+                    candidatos.push(new Candidato(select[i].value));
+                    console.log(candidatos);
+                }
+            }
+            comenzarVotaciones();
+        }
+        function comenzarVotaciones() {
+            document.getElementById("selectVotos").style.visibility = "visible";
+            document.getElementById("enviarCandidatos").style.visibility = "hidden";
+            document.getElementById("selector").style.visibility = "hidden";
+            document.getElementById("enviarVoto").style.visibility = "visible";
+            console.log("Entramos en comenzarVotaciones");
+            var selectorVotos = document.getElementById("selectVotos");
+            var selector = document.getElementById("selector");
+            //Elimino los options del select
+            for (let i = selector.options.length; i >= 0; i--) {
+                selector.remove(i);
+            }
+
+            console.log("Vamos por el alumno " + contador + " y son " + alumnos.length);
+            if (contador < alumnos.length) {
+                document.getElementById("parrafoTexto").textContent = "Le toca votar a " + alumnos[contador];
+                for (let index = 0; index < candidatos.length; index++) {
+                    //creo el numero de options que elementos en candidatos haya y les doy su correspondiente valor
+                    selectorVotos.options[index] = new Option(candidatos[index].nombre);
+                }
+                document.getElementById("enviarVoto").addEventListener("click", almacenarVoto, false);
+            } else {
+                document.getElementById("parrafoTexto").innerHTML = "";
+                document.getElementById("enviarVoto").style.visibility = "hidden";
+                document.getElementById("selectVotos").style.visibility = "hidden";
+                mostrarResultadoVotos();
+            }
+        }
+        function almacenarVoto() {
+            console.log("Entramos en la funcion almacenarVoto");
+            var selectorVotos = document.getElementById("selectVotos");
+            indiceCandidato = selectorVotos.selectedIndex;
+            console.log("indice para votos = " + indiceCandidato);
+            if (candidatos[indiceCandidato].votos == 0) {
+                candidatos[indiceCandidato].votos = 1;
+            } else {
+                candidatos[indiceCandidato].votos += 1;
+            }
+            console.log(candidatos);
+            contador++;
+            comenzarVotaciones();
+        }
+        function mostrarResultadoVotos() {
+            //Obtengo al candidato con mas votos
+            var votosMax = 0;
+            var posVotosMax = 0;
+            for (let i = 0; i < candidatos.length; i++) {
+                const votosActual = candidatos[i].votos;
+                if (votosActual > votosMax) {
+                    votosMax = votosActual;
+                    posVotosMax = i;
+                }
+            }
+            var texto = document.getElementById("parrafoTexto").textContent = "Las votaciones han finalizado";
+            var texto = document.getElementById("textoGanador").textContent = "El ganador es " + candidatos[posVotosMax].nombre + " con " + candidatos[posVotosMax].votos + " votos.";
+        }
+    </script>
+
+
+
+    <h1>Elegir delegado con Objetos</h1>
+    <input type="file" name="archivoTexto" id="archivoTexto">
+    <br>
+    <br>
+    <h3 id="parrafoTexto"></h3>
+    <h4 id="textoGanador"></h4>
+    <select id="selectVotos">
+    </select>
+    <br>
+    <br>
+    <select id="selector" multiple>
+    </select>
+    <button id="enviarCandidatos">Enviar candidatos</button>
+    <button id="enviarVoto">Enviar voto</button>
+
+
+
+</body>
+
+</html>

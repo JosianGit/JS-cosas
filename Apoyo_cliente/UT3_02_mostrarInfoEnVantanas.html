@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Apertura y cierre de Ventanas</title>
+<script type="text/javascript">
+    var anchoIdeal = screen.width / 2;
+    var altoIdeal = screen.height / 2;
+    var x = 400;
+    var y = 400;
+    function abrirVentana() {
+        var ventana = window.open("", "nuevo", "width=1000,height=600,resizable=false");
+
+        ventana.document.write('<head><title>Título nueva ventana</title></head>');
+        ventana.document.write('<body>');
+        ventana.document.write('<h3>Ejemplo de Ventana Nueva</h3>');
+        ventana.document.write('URL Completa: ' + ventana.location);
+        ventana.document.write('<br>');
+        ventana.document.write('Protocolo utilizado: ' + ventana.location.protocol);
+        ventana.document.write('<br>');
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+            ventana.document.write('Nombre en codigo del navegador: Chrome');
+        } else if (navigator.userAgent.toLowerCase().indexOf('safari') > -1) {
+            ventana.document.write('Nombre en codigo del navegador: Safari');
+        } else if (navigator.userAgent.toLowerCase().indexOf('mozilla') > -1) {
+            ventana.document.write('Nombre en codigo del navegador: Mozilla');
+        }
+        ventana.document.write('<br>');
+        if (ventana.navigator.javaEnabled()) {
+            ventana.document.write('Java SI disponible en esta ventana');
+        } else {
+            ventana.document.write('Java NO disponible en esta ventana');
+
+        }
+        ventana.document.write('<br>');
+        ventana.document.write('<br>');
+        ventana.document.write('<br>');
+        ventana.document.write('<br>');
+        ventana.document.write('<div id="contenedor">');
+        ventana.document.write('<input type="button" value="Cerrar la nueva ventana" onclick="opener.cerrarNuevaVentana(window)" />');
+        ventana.document.write('</div>');
+        ventana.document.write('</body>');
+    }
+    document.write("<h2>TAREA DWEC03</h2><hr/>");
+    document.write("<br>");
+    var nombre = prompt("Introduzca su nombre y apellidos: ");
+    var diaNac = Number(prompt("Introduzca su dia de nacimiento:"));
+    var mesNac = Number(prompt("Introduzca su mes de nacimiento:"));
+    var annoNac = Number(prompt("Introduzca su año de nacimiento:"));
+    document.write("Buenos días " + nombre);
+    document.write("<br>");
+    document.write("Tu nombre tiene " + nombre.length + " caracteres, incluidos espacios");
+    document.write("<br>");
+    var posicionPrimeraLetraA = 0;
+    var posicionUltimaLetraA = 0;
+    nombre = nombre.toLowerCase();
+    for (let i = (nombre.length - 1); i >= 0; i--) {
+        if (nombre.charAt(i) == 'a') {
+            posicionPrimeraLetraA = i + 1;
+        }
+
+    }
+    document.write("La primera letra A de tu nombre esta en la posicion " + posicionPrimeraLetraA);
+    document.write("<br>")
+    for (let i = 0; i < nombre.length; i++) {
+        if (nombre.charAt(i) == 'a') {
+            posicionUltimaLetraA = i + 1;
+        }
+    }
+    document.write("La ultima letra A de tu nombre esta en la posicion " + posicionUltimaLetraA);
+    document.write("<br>");
+    var nombreSin3Letras = "";
+    if (nombre.length >= 3) {
+        document.write("Tu nombre menos las 3 primeras letras es: " + nombre.substring(3, nombre.length));
+        document.write("<br>");
+    } else {
+        document.write("Tu nombre menos las 3 primeras letras es: TU NOMBRE TIENE MENOS DE 3 LETRAS");
+        document.write("<br>");
+    }
+    document.write("Tu nombre todo en mayúsculas es: " + nombre.toUpperCase());
+    document.write("<br>");
+    document.write("Tu edad es: " + calcularAnnos(diaNac, mesNac, annoNac) + " años");
+    document.write("<br>");
+    document.write("Naciste un feliz " + calcularDiaSemana(annoNac, mesNac, diaNac) + " del año " + annoNac);
+    document.write("<br>");
+    document.write("El coseno de 180 es: " + Math.cos(180));
+    document.write("<br>");
+    document.write("El número mayor de (34,67,23,75,35,19) es: " + Math.max(34, 67, 23, 75, 35, 19));
+    document.write("<br>");
+    document.write("Ejemplo de numero al azar: " + obtenerNumRandom(1, 100));
+    document.write("<br>");
+
+
+    function calcularAnnos(diaNac, mesNac, annoNac) {
+        var fechaActual = new Date();
+        //Restamos los años
+        annos = fechaActual.getFullYear() - annoNac;
+        // Si no ha llegado su cumpleaños le restamos el año por cumplir (Los meses en Date empiezan en 0, por eso tenemos que sumar 1)
+        if ((fechaActual.getMonth() + 1) < mesNac) {
+            if (fechaActual.getDay() < diaNac) {
+                annos--;
+            }
+        }
+        return annos;
+    }
+
+    function obtenerNumRandom(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    function calcularDiaSemana(anno, mes, dia) {
+        var numeroDia = new Date(anno, mes, dia).getDay();
+        var dias = [
+            'domingo',
+            'lunes',
+            'martes',
+            'miércoles',
+            'jueves',
+            'viernes',
+            'sábado',
+        ];
+        return dias[numeroDia];
+    }
+
+
+
+    function cerrarNuevaVentana(obj) {
+        obj.close();
+    }
+
+
+
+</script>
+
+<head>
+
+</head>
+
+<body>
+    <br>
+    <button style="background-color: yellow;" onclick="abrirVentana()">ABRIR NUEVA VENTANA</button>
+</body>
+<html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+    <title>Prueba lectura ficheros</title>
+</head>
+
+<body>
+    <script>
+        addEventListener("load", prepararEvento, false);
+        function prepararEvento() {
+            console.log("hola que pasa");
+            document.getElementById("archivoTexto").addEventListener("change", cargarContenido, false);
+        }
+        function cargarContenido(evento) {//en este caso "evento" es el elemento input type="file"
+            let archivo = evento.target.files[0] //obtengo el primer archivo del array de archivos
+            if (archivo) {//si existe un archivo. SI EL USUARIO HA SELECCIONADO ALGO
+                document.getElementById("infoError").innerText = "";
+                let lector = new FileReader();               
+                lector.readAsText(archivo); //Leemos el contenido del archivo
+                //IMPORTANTE: lector.onload NO SE EJECUTARÁ HASTA QUE NO SE INVOQUE .ReadAs... en el FileReader
+                lector.onload = function (e) {
+                    //en esta funcion anonima decimos que cuando se use el lector (el elemento FileReader)
+                    //se cargue el contenido en la variable "contenido" para mostrar dicho contenido
+                    //en el textarea. 
+                    let contenido = e.target.result;
+                    document.getElementById("contenido").innerText = contenido; //imprimo el resultado en el elemento textarea
+                };
+
+            } else {
+                document.getElementById("infoError").innerText = "archivo no seleccionado"; //informo del error
+            }
+
+        }
+
+
+    </script>
+    <h1>Prueba lectura ficheros</h1>
+    <br>
+    <p>Selecciona un archivo de texto plano (.txt si puede ser)</p>
+    <input type="file" id="archivoTexto">
+    <hr>
+    <textarea id="contenido" cols="30" rows="10"></textarea>
+    <p style="color: red;" id="infoError"></p>
+</body>
+
+</html>

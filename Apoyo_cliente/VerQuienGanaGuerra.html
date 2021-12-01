@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        class Soldado {
+            constructor(faccion, puntuacion = 0) {
+                this.faccion = faccion;
+                this.puntuacion = puntuacion;
+            }
+        }
+        var soldados = [];
+        var indice = 0;
+        var selector;
+        addEventListener("load", iniciar, false);
+        function iniciar() {
+            document.getElementById("archivo").addEventListener("change", leerArchivo, false);
+        }
+        function leerArchivo(e) {
+            var mi_archivo = e.target.files[0];
+            var lector = new FileReader();
+            lector.readAsText(mi_archivo);
+            lector.onload = function (e) {
+                var contenido = e.target.result;
+                for (let i = 0; i < contenido.split("\n").length; i++) {
+                    for (let j = 0; j < contenido.split("\n")[i].split(";")[1]; j++) {
+                        var unSoldado = new Soldado(contenido.split("\n")[i].split(";")[0]);
+                        soldados.push(unSoldado);
+                    }
+                }
+                console.log(soldados);
+                // indice = soldados.length;
+                darPuntuaciones();
+            }
+        }
+        function darPuntuaciones() {
+            if (indice < soldados.length) {
+                document.getElementById("soldadoActual").textContent = "Selecciona la puntuacion del soldado " + (indice + 1) + " (" + soldados[indice].faccion + ")";
+                //Cargo el select con las puntuaciones posibles
+                selector = document.getElementById("selector");
+                selector.options[0] = new Option("2 puntos", 2);
+                selector.options[1] = new Option("5 puntos", 5);
+                selector.options[2] = new Option("10 puntos", 10);
+                selector.options[3] = new Option("15 puntos", 15);
+                document.getElementById("buttonDarPuntos").addEventListener("click", almacenarPuntos, false);
+            } else {
+                calcularYMostrarResultados();
+                document.getElementById("selector").style.visibility = "hidden";
+                document.getElementById("buttonDarPuntos").style.visibility = "hidden";
+                document.getElementById("soldadoActual").style.visibility = "hidden";
+            }
+        }
+        function almacenarPuntos() {
+            soldados[indice].puntuacion = parseInt(selector.options[selector.selectedIndex].value);
+            indice++;
+            console.log(soldados);
+            darPuntuaciones();
+        }
+        function calcularYMostrarResultados() {
+            var faccion1 = soldados[0].faccion;
+            var faccion2 = "";
+            var puntosFaccion1 = 0;
+            var puntosFaccion2 = 0;
+            soldados.forEach(soldadoActual => {
+                if (soldadoActual.faccion == faccion1) {
+                    puntosFaccion1 += soldadoActual.puntuacion;
+                } else {
+                    puntosFaccion2 += soldadoActual.puntuacion;
+                    faccion2 = soldadoActual.faccion;
+                }
+            });
+            var ganador = "";
+            if (puntosFaccion1 > puntosFaccion2) {
+                ganador = faccion1;
+            } else if(puntosFaccion1 < puntosFaccion2) {
+                ganador = faccion2;
+            }else {
+                ganador = "ninguna. Hay empate de puntos";
+            }
+            console.log(faccion1 + ": " + puntosFaccion1 + " puntos totales");
+            console.log(faccion2 + ": " + puntosFaccion2 + " puntos totales");
+            document.getElementById("textoResultado1").textContent = "La faccion " + faccion1 + " ha obtenido " + puntosFaccion1 + " puntos.";
+            document.getElementById("textoResultado2").textContent = "La faccion " + faccion2 + " ha obtenido " + puntosFaccion2 + " puntos.";
+            document.getElementById("textoResultado3").textContent = "La facción que se lleva la victoria es la " + ganador;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Guerra entre dos bandos. Cada soldado tendra una puntuacion. ¿Quien ganara?</h1>
+    <br>
+    <input type="file" id="archivo">
+    <br>
+    <p id="soldadoActual"></p>
+    <select id="selector"></select>
+    <br><br>
+    <button id="buttonDarPuntos">Dar puntuacion</button>
+    <h5 id="textoResultado1"></h5>
+    <h5 id="textoResultado2"></h5>
+    <h3 id="textoResultado3"></h3>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        function textoAMayus() {
+            var texto = document.getElementById("texto").value;
+            var textoMayus = texto.toUpperCase();
+            var textoMayus = document.getElementById("infoTexto").textContent = textoMayus;
+        }
+    </script>
+</head>
+
+<body>
+    <p>Introduce una cadena de texto</p>
+    <input type="text" id="texto">
+    <br><br>
+    <button id="buttonEnviar" onclick="textoAMayus()">Gestionar texto</button>
+    <br>
+    <p>El texto introducido en MAYUS es:</p>
+    <p id="infoTexto"></p>
+</body>
+
+</html>

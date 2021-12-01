@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        //COMO EL EJERCICIO UT4_03_Ejercicio 01 solo que con comunicacion bidireccional
+        class Producto {
+            constructor(nombre, precio) {
+                this.nombre = nombre;
+                this.precio = precio;
+            }
+        }
+        var productos = [];
+        var ventanaHija;
+        function abrirVentanaHija(params) {
+            ventanaHija = window.open("mostrarProductosVentanaHija.html", "", "width=400; height=400;");
+        }
+        function iniciar() {
+            document.getElementById("fichero").addEventListener("change", cargarContenido, false);
+        }
+        function cargarContenido(e) {
+            var archivo = e.target.files[0];
+            var lector = new FileReader();
+            lector.readAsText(archivo);
+            lector.onload = function (e) {
+                var contenido = e.target.result;
+                var filas = contenido.split("\n");
+                contenido.split("\n").forEach(filaActual => {
+                    productos.push(new Producto(filaActual.split(";")[0], filaActual.split(";")[1]));
+                });
+                console.log(productos);
+                cargarContenidoSelect();
+            }
+        }
+        function cargarContenidoSelect() {
+
+            for (let i = 0; i < productos.length; i++) {
+                var selector = document.getElementById("selector");
+                selector.options[i] = new Option(productos[i].nombre, productos[i].precio);
+            }
+            document.getElementById("buttonEnviar").addEventListener("click", enviarInfoVentanaHija, false);
+        }
+        function enviarInfoVentanaHija() {
+            console.log("El producto elegido es " + selector.options[selector.selectedIndex].text + " y cuesta " + selector.options[selector.selectedIndex].value);
+            var textoHijaInput = ventanaHija.document.getElementById("textoRecibidoEnInput");
+            var textoHijaParrafo = ventanaHija.document.getElementById("textoRecibidoEnP");
+            textoHijaParrafo.innerHTML = "El producto elegido es " + selector.options[selector.selectedIndex].text + " y cuesta " + selector.options[selector.selectedIndex].value;
+            textoHijaInput.value = "El producto elegido es " + selector.options[selector.selectedIndex].text + " y cuesta " + selector.options[selector.selectedIndex].value;
+        }
+    </script>
+
+</head>
+
+<body onload="iniciar()">
+    <h1>Ejecutar en XAMMP</h1>
+    <br>
+    <h2>Ventana PADRE</h2>
+    <input type="file" id="fichero">
+    <br><br>
+    <button id="buttonAbrirHija" onclick="abrirVentanaHija()">Abrir ventana Hija</button>
+    <br>
+    <select id="selector"></select>
+    <br><br>
+    <button id="buttonEnviar">Enviar producto</button>
+    <br>
+    <p style="color: green;">Texto recibido de la ventana HIJA:</p>
+    <p id="textoRecibidoHija"></p>
+
+</body>
+
+</html>

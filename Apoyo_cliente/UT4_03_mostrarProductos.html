@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <script>
+        class Producto {
+            constructor(nombre, precio) {
+                this.nombre = nombre;
+                this.precio = precio;
+            }
+        }
+        var productos = [];
+        addEventListener("load", leerYcargarArchivo, false);
+        function leerYcargarArchivo() {
+            document.getElementById("archivoTexto").addEventListener("change", cargarContenido, false);
+        }
+        function cargarContenido(evento) {//en este caso "evento" es el elemento input type="file"
+            console.log("ejecuto cargarContenido(evento)");
+            let archivo = evento.target.files[0] //obtengo el primer archivo del array de archivos
+            if (archivo) {//si existe un archivo. SI EL USUARIO HA SELECCIONADO ALGO
+                let lector = new FileReader();
+                lector.readAsText(archivo); //Leemos el contenido del archivo
+                //IMPORTANTE: lector.onload NO SE EJECUTARÁ HASTA QUE NO SE INVOQUE .ReadAs... en el FileReader
+                lector.onload = function (e) {
+                    //en esta funcion anonima decimos que cuando se use el lector (el elemento FileReader)
+                    //se cargue el contenido en la variable "contenido" para cargarlo posteriormente
+                    //en un <SELECT> con <OPTION> que creare en tiempo de ejecucion
+                    let contenido = e.target.result;
+                    var nombreProducto;
+                    var precioProducto;
+                    for (let i = 0; i < contenido.split("\n").length; i++) {
+                        //Aqui lo que hago es aprovechar que .split() devuelve
+                        //un array de lo que hubiera separado por "\n" para usar
+                        // la longitud como tope del for y para recorrer cada elemento
+                        //y obtener los datos que haya antes y despues del ";" de cada linea de texto obtenida
+                        nombreProducto = contenido.split("\n")[i].split(";")[0];
+                        precioProducto = contenido.split("\n")[i].split(";")[1];
+                        console.log("Nombre producto: " + nombreProducto);
+                        console.log("Precio producto: " + precioProducto);
+                        productos.push(new Producto(nombreProducto, precioProducto));
+                    }
+                    //MOSTRAMOS EL CONTENIDO DE PRODUCTOS EN CONSOLE
+                    for (let i = 0; i < productos.length; i++) {
+                        console.log(productos[i]);
+                    }
+                    document.getElementById("parrafoTexto").textContent = "Selecciona un producto";
+                    //Creo el selector de los SELECT
+                    var opcionActual;
+                    for (let i = 0; i < productos.length; i++) {
+                        const prodActual = productos[i];
+                        //Indico al array de options del select que en cada 
+                        //posicion del for (i) añada una option nueva con los valores de cada fila
+                        //de dicha posicion
+                        opcionActual = new Option();
+                        opcionActual.setAttribute("value", prodActual.precio);
+                        // opcionActual.setAttribute("value", productos[i].nombre);
+                        opcionActual.textContent = prodActual.nombre;
+                        document.getElementById("selector").options[i] = opcionActual;
+                    }
+                    document.getElementById("selector").addEventListener("change", mostrarPrecio, false);
+                }
+            };
+            function mostrarPrecio(e) {
+                var valorPrecio = e.target.value; //cojo el valor
+                var valorNombre = e.target.options[e.target.selectedIndex].text; //cojo lo que ve el usuario
+                document.getElementById("textoResultado").textContent = "El precio de " + valorNombre + " es: " + valorPrecio;
+            }
+        }
+    </script>
+    <h1>UT4 Practica 03 Ejercicio 01</h1>
+    <br>
+    <input type="file" id="archivoTexto">
+    <br>
+    <p id="parrafoTexto"></p>
+    <select id="selector">
+    </select>
+    <p id="textoResultado"></p>
+</body>
+
+</html>

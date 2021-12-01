@@ -1,0 +1,14 @@
+<html>
+<head></head>
+<body>
+    <script>
+        var letrasDNI = "TRWAGMYFPDXBNJZSQVHLCKET";
+        var numerosDNI = prompt("Introduce la parte numerica del DNI:");
+        if (isNaN(numerosDNI)) {
+            alert("Error: debe introducir la parte numerica");
+        } else {
+            alert("La letra es " + letrasDNI.charAt(numerosDNI%23));
+        }
+    </script>
+</body>
+</html>

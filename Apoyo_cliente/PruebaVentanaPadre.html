@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+    <script>
+        var botonAbrirHija;
+        var textoAEnviar;
+        var textoRecibido;
+        var ventanaHija;
+        function inicializar() {
+            botonAbrirHija = document.getElementById("abrirHija");
+            textoAEnviar = document.getElementById("textoDesdePadre");
+            textoRecibido = document.getElementById("textoRecibidoPadre");
+            //Cuando el boton es pulsado se ejecuta la funcion abrirVentanaHija
+            botonAbrirHija.addEventListener("click", abrirVentanaHija, false);
+        }
+
+        function abrirVentanaHija(e) {
+            //en este caso e es el elemento Button almacenado en la var botonAbrirHija
+            ventanaHija = document.open("PruebaVentanaHija.html", "", "width=400 height=400");
+            //cuando se modifica el contenido del elemento input text "textoAEnviar"
+            //se ejecuta la funcion "enviarTexto"
+            textoAEnviar.addEventListener("change", enviarTexto, false);
+        }
+        function enviarTexto(e) {
+            //obtengo el elemento HTML de la ventana hija cuyo contenido quiero modificar
+            //y le pongo el valor que se ha escrito en la ventana padre
+            var textoAMostrarEnHija = ventanaHija.document.getElementById("textoRecibidoHija");
+            textoAMostrarEnHija.textContent = e.target.value;
+            //(IMPORTANTE: para acceder y modificar contenido de otros archivos desde ventanas de los mismos
+            //es necesario hacerlo con XAMMP porque si no da error).
+        }
+    </script>
+</head>
+
+<body onload="inicializar()">
+    <h1>Ventana Padre (ejecutar en XAMMP)</h1>
+    <input type="button" id="abrirHija" value="Abrir ventana hija">
+    <input type="text" id="textoDesdePadre" placeholder="escribe">
+    <p id="textoRecibidoPadre">Aqui aparecera lo que envie la ventana hija</p>
+</body>
+</html>

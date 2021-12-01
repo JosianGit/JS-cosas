@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Pagina anterior y siguiente</title>
+
+<head></head>
+<script>
+    function funcionCambioPagina(option) {
+        history.go(option);
+    }
+</script>
+
+<body>
+    <h3>Ejercicio 2: Investiga como utilizar el objeto window.history para crear en un documento html dos botones que vuelvan a la página anterior y a la siguiente.</h3>
+    <input type="button" value="Página anterior" onClick=funcionCambioPagina(-1)>
+   <br><br>
+    <input type="button" value="Página siguiente" onClick=funcionCambioPagina(1)>
+</body>
+
+</html>

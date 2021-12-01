@@ -1,0 +1,47 @@
+<html>
+
+<head></head>
+
+<body>
+    <script>
+        var numero = Number(prompt("Introduce un numero: "));
+        if (isNaN(numero)) {
+            alert("Error: debe introducir un numero");
+        } else {
+            var operacion = prompt("¿Que operacion quieres hacer? (SUMA/RESTA/MULTIPLICACION/DIVISION): ");
+            operacion = operacion.toUpperCase();
+            var resultado = numero;
+            if (operacion != "SUMA" && operacion != "RESTA" && operacion != "MULTIPLICACION" && operacion != "DIVISION") {
+                alert("Error: el nombre de la operación introducido no es valido");
+            } else {
+                switch (operacion) {
+                    case "SUMA":
+                        for (let i = numero - 1; i > 0; i--) {
+                            resultado += i;
+                        }
+                        break;
+                    case "RESTA":
+                        for (let i = numero - 1; i > 0; i--) {
+                            resultado -= i;
+                        }
+                        break;
+                    case "MULTIPLICACION":
+
+                        for (let i = numero - 1; i > 0; i--) {
+                            resultado *= i;
+                        }
+                        break;
+                    case "DIVISION":
+                        for (let i = numero - 1; i > 0; i--) {
+                            resultado /= i;
+                        }
+                        break;
+                }
+                alert("El resultado de la " + operacion + " es: " + resultado);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

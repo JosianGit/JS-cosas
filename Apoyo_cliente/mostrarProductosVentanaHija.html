@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+          //COMO EL EJERCICIO UT4_03_Ejercicio 01 solo que con comunicacion bidireccional
+        function enviarTexto() {
+            console.log(document.getElementById("textoAEnviar").value);
+            var textoAEnviar = document.getElementById("textoAEnviar").value;
+            opener.document.getElementById("textoRecibidoHija").textContent = textoAEnviar;
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>Ejecutar en XAMMP</h1>
+    <br>
+    <h2>Ventana HIJA</h2>
+    <p style="color: green;">Texto recibido de ventana padre mostrado en input:</p>
+    <input type="text" id="textoRecibidoEnInput">
+    <p style="color: green;">Texto recibido de ventana padre mostrado en parrafo:</p>
+    <p id="textoRecibidoEnP"></p>
+    <br><br>
+    <input type="text" id="textoAEnviar">
+    <button id="enviarTextoPadre" onclick="enviarTexto()">Enviar texto a ventana padre</button>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<script>
+    var num1 = prompt("Introduce el primer numero: ");
+    var num2 = prompt("Introduce el segundo numero: ");
+    var num3 = prompt("Introduce el tercer numero: ");
+    var todosConValor = true;
+    if (num1 == "" || num2 == "" || num3 == "") {
+        alert("Error: ha introducido parametros sin valor");
+        todosConValor = false;
+    }
+    if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
+        alert("Error: debe introducir numeros");
+    } else if (todosConValor) {
+        if (num1 >= num2 && num1 >= num3) {
+            if (num2 >= num3) {
+                alert("Los numeros de mayor a menor son: " + num1 + " " + num2 + " " + num3);
+            } else {
+                alert("Los numeros de mayor a menor son: " + num1 + " " + num3 + " " + num2);
+            }
+        }
+        else if (num2 >= num1 && num2 >= num3) {
+            if (num1 >= num3) {
+                alert("Los numeros de mayor a menor son: " + num2 + " " + num1 + " " + num3);
+            } else {
+                alert("Los numeros de mayor a menor son: " + num2 + " " + num3 + " " + num1);
+            }
+        }
+        else if (num3 >= num1 && num3 >= num2) {
+            if (num2 >= num1) {
+                alert("Los numeros de mayor a menor son: " + num3 + " " + num2 + " " + num1);
+            } else {
+                alert("Los numeros de mayor a menor son: " + num3 + " " + num1 + " " + num2);
+            }
+        }
+    }
+</script>
+
+

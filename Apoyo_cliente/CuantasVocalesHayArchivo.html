@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+
+        class Vocales {
+            constructor(a = 0, e = 0, i = 0, o = 0, u = 0) {
+                this.a = a;
+                this.e = e;
+                this.i = i;
+                this.o = o;
+                this.u = u;
+            }
+        }
+        var lineas = [];
+        var vocalesTexto = new Vocales();
+        function iniciar() {
+            document.getElementById("archivo").addEventListener("change", leerArchivo, false);
+        }
+        function leerArchivo(e) {
+            var miArchivo = e.target.files[0];
+            var lector = new FileReader();
+            lector.readAsText(miArchivo);
+            lector.onload = function (e) {
+                var contenido = e.target.result;
+                lineas = contenido.split("\n");
+                for (let i = 0; i < lineas.length; i++) {
+                    console.log(lineas[i]);
+                }
+                contabilizarVocales(lineas);
+            }
+        }
+        function contabilizarVocales(lineas) {
+            lineas.forEach(lineaActual => {
+                for (let i = 0; i < lineaActual.length; i++) {
+                    const caracterActual = lineaActual[i];
+                    switch (caracterActual) {
+                        case 'a':
+                            vocalesTexto.a += 1;
+                            break;
+                        case 'e':
+                            vocalesTexto.e += 1;
+                            break;
+                        case 'i':
+                            vocalesTexto.i += 1;
+                            break;
+                        case 'o':
+                            vocalesTexto.o += 1;
+                            break;
+                        case 'u':
+                            vocalesTexto.u += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+            console.log(vocalesTexto);
+            notificarNumVocales();
+        }
+        function notificarNumVocales() {
+            document.getElementById("mostrarTexto").innerText = "a: " + vocalesTexto.a + "; e: " + vocalesTexto.e + "; i: " + vocalesTexto.i + "; o: " + vocalesTexto.o + "; u: " + vocalesTexto.u;
+        }
+    </script>
+</head>
+
+<body onload="iniciar()">
+    <h1>Selecciona un archivo y te devolveremos cuantas vocales tiene el texto</h1>
+    <br>
+    <input type="file" id="archivo">
+    <br>
+    <br>
+    <h3>Vocales totales</h3>
+    <p id="mostrarTexto"></p>
+</body>
+
+</html>

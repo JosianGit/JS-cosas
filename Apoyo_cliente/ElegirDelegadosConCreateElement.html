@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Docuement</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <script>
+        let alumnos = [];
+        let candidatos = [];
+        let votos = [];
+        let numAlumnos = 0;
+        // var botonEnviar;
+        addEventListener("load", leerYcargarArchivo, false);
+        function leerYcargarArchivo() {
+            console.log("hola que pasa");
+            document.getElementById("archivoTexto").addEventListener("change", cargarContenido, false);
+        }
+        function cargarContenido(evento) {//en este caso "evento" es el elemento input type="file"
+            console.log("ejecuto cargarContenido(evento)");
+            // let alumnos = [];//---------------
+            let archivo = evento.target.files[0] //obtengo el primer archivo del array de archivos
+            if (archivo) {//si existe un archivo. SI EL USUARIO HA SELECCIONADO ALGO
+                let lector = new FileReader();
+                lector.readAsText(archivo); //Leemos el contenido del archivo
+                //IMPORTANTE: lector.onload NO SE EJECUTARÁ HASTA QUE NO SE INVOQUE .ReadAs... en el FileReader
+                lector.onload = function (e) {
+                    //en esta funcion anonima decimos que cuando se use el lector (el elemento FileReader)
+                    //se cargue el contenido en la variable "contenido" para cargarlo posteriormente
+                    //en un <SELECT> con <OPTION> que creare en tiempo de ejecucion
+                    let contenido = e.target.result;
+                    alumnos = contenido.split("\n");//guardamos el contenido del archivo en el array alumnos
+                    console.log("vamos a ver que tiene el array");
+                    for (let index = 0; index < alumnos.length; index++) {
+                        const element = alumnos[index];
+                        console.log("Alumno en pos " + index + " es " + element);
+                    }
+                    var parrafo = document.createElement("p");
+                    parrafo.textContent = "Selecciona los alumnos que consideres futuros delegados";
+                    document.getElementById("contenedor").appendChild(parrafo);
+                    //cargamos el contenido del array en checkboxes generados dinamicamente
+                    for (let i = 0; i < alumnos.length; i++) {
+                        const alumActual = alumnos[i];
+                        var label = document.createElement("LABEL");
+                        var checkbox = document.createElement('INPUT');
+                        checkbox.setAttribute("type", "checkbox");
+                        checkbox.setAttribute("value", alumActual);
+                        checkbox.setAttribute("id", i);
+                        checkbox.setAttribute("name", "alumno" + i);
+                        checkbox.setAttribute("title", alumActual);
+                        var texto = document.createTextNode(alumActual);
+                        var saltoLinea = document.createElement("br");
+                        label.appendChild(texto);
+                        label.appendChild(checkbox);
+                        label.appendChild(saltoLinea);
+                        document.getElementById("contenedor").appendChild(label);
+                    }
+                    //---------------------------------------------------------------------
+                    //Lo mismo que en el for de antes pero CARGANDO DATOS EN UN SELECT OPTION
+                    //Ahora generamos el select-option para cargar datos del array alumnos
+                    /* const select = document.createElement("SELECT");
+                     for (let i = 0; i < alumnos.length; i++) {
+                         const alumActual = alumnos[i];
+                         const option = document.createElement("OPTION");
+                         option.textContent = alumActual;
+                         select.appendChild(option);
+                     }
+                     document.getElementById("contenedor").appendChild(select);
+                     --------------------------------------------------------------------*/
+                    var botonEnviar = document.createElement('INPUT');
+                    botonEnviar.setAttribute("type", "button");
+                    botonEnviar.setAttribute("value", "enviar datos");
+                    botonEnviar.setAttribute("name", "enviar");
+                    botonEnviar.setAttribute("id", "botonEnviar");
+                    //  botonEnviar.setAttribute("onclick", guardarCandidatos());
+                    botonEnviar.setAttribute("onclick", "");
+                    botonEnviar.onclick = function () { guardarCandidatos(); };
+                    var saltoLinea = document.createElement("br");
+                    document.getElementById("contenedor").appendChild(saltoLinea);
+                    document.getElementById("contenedor").appendChild(botonEnviar);
+                }
+            };
+
+        }
+        function guardarCandidatos() {
+            numAlumnos = alumnos.length;
+            console.log("entramos en funcion de candidatos");
+            for (let i = 0; i < alumnos.length; i++) {
+                const element = alumnos[i];
+                if (document.getElementById(i).checked) {
+                    candidatos.push(alumnos[i]);
+                }
+            }
+            console.log("Los candidatos son:");
+            for (let i = 0; i < candidatos.length; i++) {
+                console.log(candidatos[i]);
+            }
+            realizarVotos();
+        }
+        function realizarVotos() {
+            document.getElementById("contenedor").innerHTML = ""; //Se limpia la pantalla
+            //  document.getElementById("contenedor").style.visibility = "hidden"; //Se ocultan todos los elementos HTML creados en el div "contenedor"
+            votos = new Array(candidatos.length); //Damos al array votos la misma longitud que al array de candidatos.
+            for (let i = 0; i < alumnos.length; i++) {
+                const element = alumnos[i];
+                const parrafoIntro = document.createElement("h3");
+                parrafoIntro.setAttribute("id", "parrafoIntro" + i);
+                parrafoIntro.textContent = "Le toca votar a " + alumnos[i];
+                const parrafoSelect = document.createElement("p");
+                parrafoSelect.setAttribute("id", "parrafoSelect" + i);
+                parrafoSelect.textContent = "Selecciona a un candidato";
+                document.getElementById("contenedorVotos").appendChild(parrafoIntro);
+                document.getElementById("contenedorVotos").appendChild(parrafoSelect);
+                const select = document.createElement("SELECT");
+                select.setAttribute("id", "select" + i);
+                for (let i = 0; i < candidatos.length; i++) {
+                    const candidatoActual = candidatos[i];
+                    const option = document.createElement("OPTION");
+                    option.textContent = candidatoActual;
+                    select.appendChild(option);
+                }
+                document.getElementById("contenedorVotos").appendChild(select);
+                const botonVotar = document.createElement('INPUT');
+                botonVotar.setAttribute("type", "button");
+                botonVotar.setAttribute("value", "Votar");
+                botonVotar.setAttribute("name", "votar");
+                botonVotar.setAttribute("id", "botonVotar" + i);
+                //  botonEnviar.setAttribute("onclick", guardarCandidatos());
+                botonVotar.setAttribute("onclick", "");
+                botonVotar.onclick = function () { nuevoVoto(select, botonVotar, parrafoIntro, parrafoSelect); };
+                document.getElementById("contenedorVotos").appendChild(botonVotar);
+
+            }
+        }
+
+        function nuevoVoto(select, botonVotar, parrafoIntro, parrafoSelect) {
+            //En esta funcion asocio cada posicion del array candidatos
+            //al del array votos, incrementando este ultimo en la posicion
+            //de cada candidato elegido.
+            console.log("Entro en nuevoVoto()");
+            var valorOption = select.value;
+            for (let i = 0; i < candidatos.length; i++) {
+                const candidatoActual = candidatos[i];
+                if (valorOption.trim() == candidatoActual.trim()) {
+                    console.log("A votado " + candidatoActual + " y a elegido a " + valorOption);
+                    if (votos[i] == null) {
+                        votos[i] = 1;
+                    } else {
+                        votos[i] += 1;
+                    }
+                }
+            }
+            console.log(votos);
+            //Una vez votado elimino los elementos creados del alumno votante
+            document.getElementById("contenedorVotos").removeChild(select);
+            document.getElementById("contenedorVotos").removeChild(botonVotar);
+            document.getElementById("contenedorVotos").removeChild(parrafoIntro);
+            document.getElementById("contenedorVotos").removeChild(parrafoSelect);
+            //Esto los ocultaria
+            /*  select.style.visibility = "hidden";
+              botonVotar.style.visibility = "hidden";
+              parrafoIntro.style.visibility = "hidden";
+              parrafoSelect.style.visibility = "hidden";*/
+            numAlumnos--;
+            console.log("COMPROBAMOS numAlumnos Y VALE: " + numAlumnos);
+            if (numAlumnos == 0) { //con numAlumnos nos aseguramos de que todos los alumnos han votado 
+                mostrarDelegado();
+            }
+        }
+        function mostrarDelegado() {
+            var votosMax = 0;
+            var posVotosMax = 0;
+            for (let i = 0; i < votos.length; i++) {
+                const votosActual = votos[i];              
+                if (votosActual > votosMax) {
+                    votosMax = votosActual;
+                    posVotosMax = i;
+                }
+            }
+            console.log("La posicion del candidato ganador es la " + posVotosMax);
+            document.getElementById("contenedorVotos").setAttribute("style", "border-style: dashed; border-color: blue;");
+            var parrafoVencedor = document.createElement("h2");
+            parrafoVencedor.textContent = "Tras la votacion ha salido elegido " + candidatos[posVotosMax] + " con " + votosMax + " votos.";
+            document.getElementById("contenedorVotos").appendChild(parrafoVencedor);
+            mostrarVotosTotales();
+        }
+        function mostrarVotosTotales() {
+            document.getElementById("contenedorResultado").setAttribute("style", "border-style: dashed; border-color: red;");
+            var encabezado = document.createElement("h4");
+            encabezado.setAttribute("id", "parrafoEncabezado");
+            encabezado.textContent = "Resultados totales";
+            document.getElementById("contenedorResultado").appendChild(encabezado);
+            for (let i = 0; i < candidatos.length; i++) {
+                const candidatoActual = candidatos[i];
+                if (votos[i] == null) {
+                    votos[i] = 0;
+                }
+                var parrafo = document.createElement("p");
+                parrafo.setAttribute("id", "parrafo" + i);
+                parrafo.textContent = "Candidato " + (i + 1) + ": " + candidatos[i] + (" (votos totales: " + votos[i] + ")");
+                document.getElementById("contenedorResultado").appendChild(parrafo);
+            }
+        }
+    </script>
+    <h3>Elección de candidatos a ser delegados</h3>
+    <input type="file" id="archivoTexto">
+    <br><br>
+    <div id="contenedor">
+    </div>
+    <div id="contenedorVotos">
+    </div>
+    <br>
+    <div id="contenedorResultado">
+    </div>
+</body>
+
+</html>

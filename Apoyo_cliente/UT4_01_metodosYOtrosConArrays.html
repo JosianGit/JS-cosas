@@ -1,0 +1,78 @@
+<html>
+<head></head>
+<body>
+    <h1>UT4 Ejercicio 01</h1>
+    <script>
+        var elementos = ["perro", "gato", "aguila", "serpiente", "aguacate", "ajo", "agua", "tigre", "reno", "mosca"];
+        document.write("<h4>-1: Visualiza por pantalla todo el contenido del array, separando cada dato en líneas distintas.</h4>");
+        for (let i = 0; i < elementos.length; i++) {
+            const elemActual = elementos[i];
+            document.write("<p>" + elemActual + "</p>");
+        }
+        document.write("<br>");
+
+        document.write("<h4>-2:Añade al array un dato más. (mediante el uso [longitud]</h4>");
+        elementos[elementos.length] = "Nadal";
+        var datosArray = "";
+        for (let i = 0; i < elementos.length; i++) {
+            datosArray += elementos[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-3:Añade al array dos datos más utilizando un solo método</h4>");
+        elementos.push("Wimbledon", "Mercedes");
+        datosArray = "";
+        for (let i = 0; i < elementos.length; i++) {
+            datosArray += elementos[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-4:Añade un dato más al principio del array.</h4>");
+        elementos.unshift("Skoda");
+        datosArray = "";
+        for (let i = 0; i < elementos.length; i++) {
+            datosArray += elementos[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-5: Localiza un cierto dato dentro del array.</h4>");
+        document.write("<p>En la 3ª posicion el array tiene el elemento: " + elementos[2] + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-6: Elimina los últimos tres datos del array.</h4>");
+        elementos.pop();
+        elementos.pop();
+        elementos.pop();
+        datosArray = "";
+        for (let i = 0; i < elementos.length; i++) {
+            datosArray += elementos[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-7: Crea un sub-array llamado array_recortado con los datos del array elementos, comprendidos entre la posición 4 y 8 (ambos inclusive).</h4>");
+        var array_recortado = elementos.slice(3, 8);
+        datosArray = "";
+        for (let i = 0; i < array_recortado.length; i++) {
+            datosArray += array_recortado[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+
+        document.write("<h4>-8: Crea un nuevo array llamado elementos_MYCLS con los datos del array elementos en mayúsculas.</h4>");
+        var elementos_MYCLS = elementos.map(convertirMayus);
+        function convertirMayus(elemento) {
+            return elemento.toUpperCase();
+        }
+        datosArray = "";
+        for (let i = 0; i < elementos_MYCLS.length; i++) {
+            datosArray += elementos_MYCLS[i] + " ";
+        }
+        document.write("<p>" + datosArray + "</p>");
+        document.write("<br>");
+    </script>
+</body>
+</html>

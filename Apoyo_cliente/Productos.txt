@@ -1,0 +1,5 @@
+Cebollas;7€
+Manzanas;6€
+Teclados;62€
+Pantallas;87€
+Acero;50€

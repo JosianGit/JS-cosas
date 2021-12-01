@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+    <script>
+        var textoAEnviar;
+        var textoRecibido;
+        function inicializar() {
+            textoAEnviar = document.getElementById("textoDesdeHija");
+            textoRecibido = document.getElementById("textoRecibidoHija");
+            //cuando se modifica el contenido del elemento input text "textoAEnviar"
+            //se ejecuta la funcion "enviarTexto"
+            textoAEnviar.addEventListener("change", enviarTexto, false);
+        }
+        function enviarTexto(e) {
+            //obtengo el elemento HTML de la ventana padre (la ventana opener) cuyo contenido quiero modificar
+            //y le pongo el valor que se ha escrito en la ventana hija
+            var textoAMostrarEnPadre = opener.document.getElementById("textoRecibidoPadre");
+            textoAMostrarEnPadre.textContent = e.target.value;
+            //(IMPORTANTE: para acceder y modificar contenido de otros archivos desde ventanas de los mismos
+            //es necesario hacerlo con XAMMP porque si no da error).
+        }
+    </script>
+</head>
+
+<body onload="inicializar()">
+    <h1>Ventana Hija (Ejecutar en XAMMP)</h1>
+    <input type="text" id="textoDesdeHija" placeholder="escribe">
+    <p id="textoRecibidoHija">Aqui aparecera lo que envie la ventana padre</p>
+</body>
+
+
+</html>
